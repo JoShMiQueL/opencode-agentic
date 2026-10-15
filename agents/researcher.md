@@ -1,7 +1,7 @@
 ---
 description: Researches libraries, APIs, documentation, and approaches using the web and read-only codebase access
 mode: subagent
-model: devin/swe-2-high
+model: devin/swe-2-medium
 permissions:
   - action: edit
     resource: "*"

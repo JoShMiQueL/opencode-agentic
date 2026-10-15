@@ -15,6 +15,9 @@ permissions:
   - action: subagent
     resource: "*"
     effect: deny
+  - action: subagent
+    resource: explore
+    effect: allow
 ---
 
 You are an implementation agent. You receive one scoped task, execute it completely, and report back.
