@@ -7,8 +7,9 @@ permissions:
   - action: edit
     resource: "*"
     effect: deny
-  # Shell is allowed for inspection/verification, but only safe commands run
-  # without approval. Anything that could write/execute asks first.
+  # Shell: read-only inspection and pnpm verification run silently.
+  # Anything unlisted (python, node, cargo, docker, installs, ...)
+  # falls through to the catch-all and asks for approval.
   - action: shell
     resource: "git status"
     effect: allow
@@ -17,6 +18,9 @@ permissions:
     effect: allow
   - action: shell
     resource: "git log *"
+    effect: allow
+  - action: shell
+    resource: "git show *"
     effect: allow
   - action: shell
     resource: "ls *"
@@ -31,20 +35,17 @@ permissions:
     resource: "find *"
     effect: allow
   - action: shell
-    resource: "npm *"
-    effect: ask
-  - action: shell
-    resource: "bun *"
-    effect: ask
-  - action: shell
-    resource: "npx *"
-    effect: ask
-  - action: shell
-    resource: "tsc *"
+    resource: "pnpm typecheck*"
     effect: allow
   - action: shell
-    resource: "node *"
-    effect: ask
+    resource: "pnpm check*"
+    effect: allow
+  - action: shell
+    resource: "pnpm test*"
+    effect: allow
+  - action: shell
+    resource: "pnpm build*"
+    effect: allow
   - action: shell
     resource: "*"
     effect: ask

@@ -50,8 +50,9 @@ permissions:
 
 - **Locked orchestrator** — `edit: *` denied and a shell whitelist, so it
   inspects/verifies but can never author code; all changes go through `coder`.
-- **Shell whitelist** — `git status/diff/log`, `ls`, `cat`, `grep`, `find`, and
-  `tsc` run freely; `npm`/`bun`/`npx`/`node` ask first; everything else asks.
+- **Shell whitelist** — `git status/diff/log/show`, `ls`, `cat`, `grep`, `find`,
+  and the pnpm verification commands (`pnpm typecheck*`, `pnpm check*`,
+  `pnpm test*`, `pnpm build*`) run freely; everything else asks.
 - **Delivery gate** — code changes are not reported as done until `reviewer`
   has reviewed them and `qa` has verified them.
 - **Cheaper researcher** — downgraded to `swe-2-medium`; research doesn't need
