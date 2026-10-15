@@ -3,51 +3,61 @@ description: Plans work, routes tasks to specialized subagents, and verifies res
 mode: primary
 model: devin/swe-2-max
 permissions:
-  # Read-only orchestrator: route and verify, never author code.
+  # Autonomous: shell runs freely EXCEPT a short denylist of destructive
+  # commands, which ask for approval. Read tools also allowed.
   - action: edit
     resource: "*"
     effect: deny
-  # Shell: read-only inspection and pnpm verification run silently.
-  # Anything unlisted (python, node, cargo, docker, installs, ...)
-  # falls through to the catch-all and asks for approval.
-  - action: shell
-    resource: "git status"
-    effect: allow
-  - action: shell
-    resource: "git diff *"
-    effect: allow
-  - action: shell
-    resource: "git log *"
-    effect: allow
-  - action: shell
-    resource: "git show *"
-    effect: allow
-  - action: shell
-    resource: "ls *"
-    effect: allow
-  - action: shell
-    resource: "cat *"
-    effect: allow
-  - action: shell
-    resource: "grep *"
-    effect: allow
-  - action: shell
-    resource: "find *"
-    effect: allow
-  - action: shell
-    resource: "pnpm typecheck*"
-    effect: allow
-  - action: shell
-    resource: "pnpm check*"
-    effect: allow
-  - action: shell
-    resource: "pnpm test*"
-    effect: allow
-  - action: shell
-    resource: "pnpm build*"
-    effect: allow
   - action: shell
     resource: "*"
+    effect: allow
+  - action: shell
+    resource: "rm *"
+    effect: ask
+  - action: shell
+    resource: "rmdir *"
+    effect: ask
+  - action: shell
+    resource: "del *"
+    effect: ask
+  - action: shell
+    resource: "erase *"
+    effect: ask
+  - action: shell
+    resource: "*| sh"
+    effect: ask
+  - action: shell
+    resource: "*| bash"
+    effect: ask
+  - action: shell
+    resource: "*curl*|sh*"
+    effect: ask
+  - action: shell
+    resource: "*wget*|sh*"
+    effect: ask
+  - action: shell
+    resource: "*iwr*|iex*"
+    effect: ask
+  - action: shell
+    resource: "format *"
+    effect: ask
+  - action: shell
+    resource: "shutdown *"
+    effect: ask
+  - action: shell
+    resource: "reboot *"
+    effect: ask
+  - action: shell
+    resource: "reg delete *"
+    effect: ask
+  - action: shell
+    resource: "git push *"
+    effect: ask
+  - action: shell
+    resource: "git reset --hard*"
+    effect: ask
+  - action: shell
+    resource: "git clean -f*"
     effect: ask
   # Restrict which subagents this orchestrator may launch.
   - action: subagent

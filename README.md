@@ -10,7 +10,7 @@ The orchestrator never writes code itself — it routes, inspects, and verifies.
 
 | Agent | Mode | Role | Key constraints |
 | --- | --- | --- | --- |
-| `orchestrator` | primary | Plans, delegates, verifies, reports | `edit` denied; shell limited to a read/verify whitelist (everything else asks); can only launch the subagents below |
+| `orchestrator` | primary | Plans, delegates, verifies, reports | `edit` denied; shell runs autonomously except a destructive-command denylist (`rm`, `del`, pipe-to-shell, `git push`, etc.) which asks; can only launch the subagents below |
 | `coder` | subagent | Implements one well-scoped task at a time | No web access, no skills; can only spawn `explore` |
 | `reviewer` | subagent | Reviews diffs for correctness, regressions, conventions, risks | Fully read-only: no edit, no shell, no web, no subagents |
 | `researcher` | subagent | Web research, library docs, comparing approaches | No edit, no shell, no subagents (web access kept) |
@@ -48,11 +48,12 @@ permissions:
 
 ## v2 changes
 
-- **Locked orchestrator** — `edit: *` denied and a shell whitelist, so it
-  inspects/verifies but can never author code; all changes go through `coder`.
-- **Shell whitelist** — `git status/diff/log/show`, `ls`, `cat`, `grep`, `find`,
-  and the pnpm verification commands (`pnpm typecheck*`, `pnpm check*`,
-  `pnpm test*`, `pnpm build*`) run freely; everything else asks.
+- **Locked orchestrator** — `edit: *` denied, so it can never author code;
+  all changes go through `coder`.
+- **Shell denylist** — shell runs autonomously (`allow`), EXCEPT a short
+  denylist of destructive commands (`rm`, `rmdir`, `del`, pipe-to-shell,
+  `format`, `shutdown`, `git push`/`reset --hard`/`clean -f`, etc.) which ask
+  for approval.
 - **Delivery gate** — code changes are not reported as done until `reviewer`
   has reviewed them and `qa` has verified them.
 - **Cheaper researcher** — downgraded to `swe-2-medium`; research doesn't need
