@@ -74,14 +74,6 @@ permissions:
   auto-loaded (hard rules); `.opencode/context/` holds on-demand detail the
   scout routes to.
 
-## MCP servers
-
-Custom MCP servers (**rea** — reverse engineering, **chrome-devtools** — browser
-automation) are configured under `mcp.servers` in `opencode.json(c)`, not in
-`agents/*.md`. They can be loaded globally (`~/.config/opencode/opencode.json`)
-or per-project (`<root>/opencode.json`). Details and the loading procedure are
-documented in `context/templates/mcp.md`.
-
 ## Install
 
 Copy `agents/` into `~/.config/opencode/agents/`:
