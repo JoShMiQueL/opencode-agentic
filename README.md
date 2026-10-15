@@ -15,10 +15,11 @@ The orchestrator never writes code itself — it routes, inspects, and verifies.
 | `reviewer` | subagent | Reviews diffs for correctness, regressions, conventions, risks | Fully read-only: no edit, no shell, no web, no subagents |
 | `researcher` | subagent | Web research, library docs, comparing approaches | No edit, no shell, no subagents (web access kept) |
 | `qa` | subagent | Runs builds, typechecks, linters, test suites | No edit — failures go back to `coder` |
+| `contextscout` | subagent | Discovers which `.opencode/context/` files are relevant to a task | Read-only: no edit, no shell, no web, no subagents. Returns ranked file paths, never contents |
 | `explore` | subagent (built-in) | Fast codebase search and "where is X" | Built into OpenCode |
 | `general` | subagent (built-in) | Escape hatch for anything else | Built into OpenCode |
 
-Typical pipeline: `explore`/`researcher` → `coder` → `reviewer` → `qa` → report.
+Typical pipeline: `explore`/`researcher` → `contextscout` → `coder` → `reviewer` → `qa` → report.
 
 ## How the permission model works
 
@@ -63,6 +64,11 @@ permissions:
 - **Context template** — `context/` documents the `.opencode/context/` pattern:
   small committed markdown files (commands, conventions, architecture) the
   orchestrator loads to stay lean.
+- **Context bridge** — `contextscout` resolves context through a `navigation.md`
+  index: the project's `.opencode/context/navigation.md` overrides the global
+  `~/.config/opencode/context/navigation.md`. The scout returns ranked paths
+  only; the orchestrator loads the files or forwards the paths in delegation
+  prompts.
 
 ## Install
 

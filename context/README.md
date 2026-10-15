@@ -28,3 +28,31 @@ agents from guessing commands or conventions.
 
 Keep files under ~200 lines. If a file grows past that, split it — context that
 costs too many tokens defeats the purpose.
+
+## navigation.md — the context bridge
+
+Each context directory should contain a `navigation.md` index file. It lists a
+**Quick Routes** table mapping task types to context files and priorities:
+
+```markdown
+## Quick Routes
+
+| Task type | File | Priority |
+| --- | --- | --- |
+| Any code change | `conventions.md` | critical |
+| Verifying / running builds, tests, lint | `commands.md` | critical |
+```
+
+The `contextscout` subagent uses `navigation.md` to find relevant context
+without hardcoding file names. Resolution order (project → global fallback):
+
+1. `.opencode/context/navigation.md` in the current workspace — project context
+   takes precedence.
+2. `~/.config/opencode/context/navigation.md` — shared global standards (e.g.
+   `code-quality.md`) that apply when a project has no navigation file.
+3. Neither → scout reports "No context found".
+
+The scout returns ranked **paths only** (never contents). The orchestrator reads
+the files itself or forwards the paths in the delegation prompt as
+`Context to load: <paths>`. A `navigation.md` may also link to deeper
+`navigation.md` files for subdirectories with their own conventions.
