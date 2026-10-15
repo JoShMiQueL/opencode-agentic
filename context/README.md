@@ -44,13 +44,19 @@ Each context directory should contain a `navigation.md` index file. It lists a
 ```
 
 The `contextscout` subagent uses `navigation.md` to find relevant context
-without hardcoding file names. Resolution order (project → global fallback):
+without hardcoding file names. Resolution is project-only — projects
+self-provision:
 
-1. `.opencode/context/navigation.md` in the current workspace — project context
-   takes precedence.
-2. `~/.config/opencode/context/navigation.md` — shared global standards (e.g.
-   `code-quality.md`) that apply when a project has no navigation file.
-3. Neither → scout reports "No context found".
+1. `.opencode/context/navigation.md` in the current workspace is the only
+   context source the scout reads.
+2. If it is missing, the scout reports bootstrap-needed and the orchestrator
+   sends `coder` to create `.opencode/context/` by copying
+   `~/.config/opencode/context-templates/` and adapting the files to the
+   project. The global store is **read-only seeds** — it is never read as live
+   context and never written at runtime.
+
+`context/templates/` in this repo is the distribution copy of the global
+template store — keep it in sync with `~/.config/opencode/context-templates/`.
 
 The scout returns ranked **paths only** (never contents). The orchestrator reads
 the files itself or forwards the paths in the delegation prompt as

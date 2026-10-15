@@ -64,11 +64,12 @@ permissions:
 - **Context template** — `context/` documents the `.opencode/context/` pattern:
   small committed markdown files (commands, conventions, architecture) the
   orchestrator loads to stay lean.
-- **Context bridge** — `contextscout` resolves context through a `navigation.md`
-  index: the project's `.opencode/context/navigation.md` overrides the global
-  `~/.config/opencode/context/navigation.md`. The scout returns ranked paths
-  only; the orchestrator loads the files or forwards the paths in delegation
-  prompts.
+- **Self-provisioning context** — `contextscout` reads only the project's
+  `.opencode/context/navigation.md`. When a project has none, the orchestrator
+  bootstraps once: `coder` copies `~/.config/opencode/context-templates/` into
+  `.opencode/context/` and adapts it to the project, then the scout re-runs.
+  The global template store is read-only seeds — never live context.
+  `context/templates/` is the distribution copy of that store.
 
 ## Install
 
