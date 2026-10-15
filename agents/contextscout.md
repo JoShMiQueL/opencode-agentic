@@ -42,6 +42,15 @@ The global templates are seeds for bootstrap, not live context — never read or
 
 ## Output format
 
+```markdown
+## Status
+found | bootstrap-needed | none
+## Files
+**File**: `path` — one line (ranked Critical→High→Medium)
+## External
+named library/framework to research, or "none"
+```
+
 # Context Files Found
 ## Critical
 **File**: `path/to/file.md`

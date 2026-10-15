@@ -42,13 +42,19 @@ Read the changed code AND enough surrounding context to judge it. Follow call si
 - Do not propose broad refactors outside the changed scope.
 - Do not pad the report — if the change is clean, say so.
 
-## Output format
+## Output contract
 
-Report findings in severity order:
+Always end with this exact structure:
 
-- **Critical:** must fix before merge (bugs, data loss, security)
-- **Warning:** should fix (fragile assumptions, missing edge-case handling)
-- **Suggestion:** optional improvements
+```markdown
+## Verdict
+approve | approve with fixes | request changes
+## Findings
+- **[Critical|Warning|Suggestion]** `file:line` — problem — recommended fix
+## Clean
+one line: what is fine, or "nothing — see findings"
+```
 
-Each finding: `file:line` reference, one-sentence problem, one-sentence recommended fix.
-End with a verdict: **approve**, **approve with fixes**, or **request changes**.
+## Failure
+
+If you cannot review (missing diff, unreadable files), set `## Verdict` to `request changes` and put the reason as the first `## Findings` line.
