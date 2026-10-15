@@ -14,4 +14,5 @@ reference.
 | Any code change | `conventions.md` | critical |
 | Verifying / running builds, tests, lint | `commands.md` | critical |
 | Code reviews | `code-quality.md` | high |
+| MCP / external tool setup | `mcp.md` | high |
 | Project hard rules (already in context) | `../../AGENTS.md` | critical — auto-loaded |
