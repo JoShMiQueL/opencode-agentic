@@ -70,6 +70,9 @@ permissions:
   `.opencode/context/` and adapts it to the project, then the scout re-runs.
   The global template store is read-only seeds — never live context.
   `context/templates/` is the distribution copy of that store.
+- **AGENTS.md vs context** — `AGENTS.md` at the project root is always
+  auto-loaded (hard rules); `.opencode/context/` holds on-demand detail the
+  scout routes to.
 
 ## Install
 
